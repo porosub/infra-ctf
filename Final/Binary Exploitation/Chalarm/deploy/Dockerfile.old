@@ -1,0 +1,13 @@
+FROM ubuntu:bionic
+RUN apt-get update
+
+#RUN apt-get install -y gcc-multilib ucspi-tcp
+RUN apt-get install -y gcc-arm-linux-gnueabihf binutils-arm-linux-gnueabihf binutils-arm-linux-gnueabihf-dbg
+RUN apt install ncat
+RUN adduser chalarm
+COPY flag chall sha256 /home/chalarm/
+WORKDIR /home/chalarm/
+EXPOSE 33333
+USER chalarm
+#CMD tcpserver -t 30 -RHl0 0.0.0.0 33333 ./chalarm
+CMD nc -vc ./chall -kl 0.0.0.0 33333

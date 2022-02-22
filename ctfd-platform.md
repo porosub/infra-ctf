@@ -6,7 +6,9 @@ Langkah-langkah instalasi [CTFd](https://ctfd.io/) sebagai platform event Captur
 
 ## Catatan Penting
 
-Ubah ctf.porosub.org dengan domain ctf yang akan digunakan.
+1. Ubah ctf.porosub.org dengan domain ctf yang akan digunakan.
+
+2. Semua command di setiap langkah dapat di copy & paste secara bulk. Setiap line akan tekeksekusi sendiri.
 
 ## Langkah-Langkah
 
@@ -21,27 +23,32 @@ Ubah ctf.porosub.org dengan domain ctf yang akan digunakan.
 1. Perbaruan sistem
 
 ```bash
-sudo apt update
+sudo apt update;\
 sudo apt upgrade -y
-
-# (Opsional) Restart VPS jika ada kernel upgrade
 ```
 
-2. Pengubahan timezone
+(Wajib) Restart VPS jika ada kernel upgrade
+
+2. Pengubahan timezone dan sync
 
 ```bash
-sudo timedatectl set-timezone Asia/Jakarta
+sudo timedatectl set-timezone Asia/Jakarta;\
+sudo timedatectl set-ntp true
 ```
 
 3. Pengubahan hostname dan hosts file
 
 ```bash
-sudo hostnamectl set-hostname ctf.porosub.org
+sudo hostnamectl set-hostname ctf.porosub.org;\
 sudo nano /etc/hosts
+```
 
 Konten file:
+
+```conf
+...
 127.0.0.1 localhost
-1.2.3.4 ctf.porosub.org # Ganti 1.2.3.4 dengan IP Public server
+1.2.3.4 ctf.porosub.org # Ganti 1.2.3.4 dengan Public IP server
 ...
 ```
 
@@ -50,52 +57,41 @@ Konten file:
 1. Instalasi Docker
 
 ```bash
-sudo apt-get remove docker docker-engine docker.io containerd runc
-sudo apt-get update
-sudo apt-get install \
-apt-transport-https \
-ca-certificates \
-curl \
-gnupg \
-lsb-release
-
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-echo \
-"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-sudo apt-get update
+sudo apt remove docker docker.io containerd runc;\
+sudo apt update;\
+sudo apt install apt-transport-https ca-certificates curl gnupg lsb-release;\
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg;\
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null;\
+sudo apt-get update;\
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 ```
 
 2. Instalasi Docker Compose
 
 ```bash
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose;\
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 3. Aktifkan Docker pada saat booting
 
 ```bash
-sudo systemctl enable docker.service
-sudo systemctl enable containerd.service
+sudo systemctl enable --now docker.service
+sudo systemctl enable --now containerd.service
 ```
 
 4. Penggunaan Docker tanpa root user
 
 ```bash
-sudo groupadd docker
+sudo groupadd docker;\
 sudo usermod -aG docker $USER
-
-# Logout & Login kembali ke dalam sistem
 ```
+
+        Reboot sistem setelah menambahkan user ke grup docker.
 
 ### Instalasi CTFd
 
-1. Kloning Github repository [CTFd](https://github.com/CTFd/CTFd)
+1. Clone Github repository [CTFd](https://github.com/CTFd/CTFd)
 
 ```bash
 git clone https://github.com/CTFd/CTFd.git
@@ -104,26 +100,30 @@ git clone https://github.com/CTFd/CTFd.git
 2. Penyuntingan file docker-compose.yml
 
 ```bash
-cd CTFd
+cd CTFd;\
 nano docker-compose.yml
+```
 
 Konten file:
+
+```conf
 ...
 environment:
-  - SECRET_KEY=JLycvJbVBbb5v1SC8ZMBUn8X1jNH
-  - UPLOAD_FOLDER=/var/uploads
-  - DATABASE_URL=mysql+pymysql://ctfd:ctfd@db/ctfd
-  - REDIS_URL=redis://cache:6379
-  - WORKERS=4
-  - LOG_FOLDER=/var/log/CTFd
-  - ACCESS_LOG=-
-  - ERROR_LOG=-
-  - REVERSE_PROXY=true
+   - SECRET_KEY=JLycvJbVBbb5v1SC8ZMBUn8X1jNH
+   - UPLOAD_FOLDER=/var/uploads
+   - DATABASE_URL=mysql+pymysql://ctfd:ctfd@db/ctfd
+   - REDIS_URL=redis://cache:6379
+   - WORKERS=4
+   - LOG_FOLDER=/var/log/CTFd
+   - ACCESS_LOG=-
+   - ERROR_LOG=-
+   - REVERSE_PROXY=true
 ...
-
-# Hapus service nginx karena kita akan menggunakan reverse proxy Nginx pada host machine, bukan melalui Docker
-# Biarkan baris lainnya sebagaimana mestinya
 ```
+
+        Hapus service nginx karena kita akan menggunakan reverse proxy Nginx pada host machine, bukan melalui Docker
+
+        Biarkan baris lainnya sebagaimana mestinya
 
 3. Eksekusi file docker-compose.yml
 
@@ -131,7 +131,40 @@ environment:
 docker-compose up -d
 ```
 
-Setelah proses pembuatan container selesai, platform CTFd dapat diakses di port 8000 dari IP Public Server <http://IP_PUBLIC_SERVER:8000>.
+### Konfigurasi Firewall UFW
+
+1. Perbolehkan traffic ke semua IP dan semua port (Hanya akan membuka didalam instance, tetap tidak akan bisa diakses dari luar jika telah diblokir dari tingkat service provider, namun mempermudah administrasi instance)
+
+```bash
+sudo ufw allow from any
+```
+
+2. Edit file /etc/ufw/before.rules
+
+```bash
+sudo nano /etc/ufw/before.rules
+```
+
+Masukkan teks berikut di atas *filter
+
+```bash
+*nat
+:PREROUTING ACCEPT [0:0]
+-A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000
+-A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8000
+
+COMMIT
+```
+
+3. Aktifkan Firewall
+
+```bash
+sudo systemctl enable --now ufw;\
+sudo ufw enable;\
+sudo ufw reload
+```
+
+Setelah proses pengaktifan firewall selesai, platform CTFd dapat diakses secara langsung dari IP Public Server <http://IP_PUBLIC_SERVER>.
 
 ### Konfigurasi Reverse Proxy Nginx
 
@@ -145,8 +178,11 @@ sudo apt install nginx
 
 ```bash
 sudo nano /etc/nginx/sites-available/ctf.porosub.org
+```
 
 Konten file:
+
+```bash
 limit_req_zone  $binary_remote_addr zone=mylimit:10m rate=10r/s;
 limit_conn_zone $binary_remote_addr zone=addr:10m;
 server {
@@ -187,8 +223,7 @@ sudo nginx -s reload
 5. Aktifkan Nginx pada saat sistem boot
 
 ```bash
-sudo systemctl enable nginx.service
-sudo systemctl start nginx.service
+sudo systemctl enable --now nginx.service
 ```
 
 ### Konfigurasi HTTPS dengan Let's Encrypt
@@ -196,9 +231,9 @@ sudo systemctl start nginx.service
 1. Instalasi certbot
 
 ```bash
-sudo add-apt-repository universe
-sudo apt-get update
-sudo apt-get install software-properties-common
+sudo add-apt-repository universe;\
+sudo apt-get update;\
+sudo apt-get install software-properties-common;\
 sudo apt-get install certbot python3-certbot-nginx
 ```
 
@@ -206,11 +241,12 @@ sudo apt-get install certbot python3-certbot-nginx
 
 ```bash
 sudo certbot --nginx
-
-# Berikan email address, domain/subdomain address, dan pilih opsi untuk selalu redirect koneksi http ke https
 ```
 
+Berikan email address, domain/subdomain address, dan pilih opsi untuk selalu redirect koneksi http ke https
+
 ---
+
 ## OPSIONAL
 
 ### Konfigurasi Firewall dengan UFW
@@ -218,10 +254,10 @@ sudo certbot --nginx
 Beberapa Cloud Provider tidak memberikan firewall service semacam AWS Security Group sehingga Anda harus mengatur sendiri firewall yang digunakan, salah satu firewall yang populer digunakan adalah UFW. Pastikan untuk mengizinkan akses OpenSSH dan Nginx dalam UFW.
 
 ```bash
-sudo apt install ufw
-sudo ufw allow "Nginx Full"
-sudo ufw allow "OpenSSH"
-sudo ufw enable
+sudo apt install ufw;\
+sudo ufw allow "Nginx Full";\
+sudo ufw allow "OpenSSH";\
+sudo ufw reload
 ```
 
 ### Workaround tambahan untuk pengguna Cloudflare
@@ -234,8 +270,11 @@ $binary_remote_addr diganti menjadi $http_cf_connecting_ip agar Nginx dapat memb
 
 ```bash
 sudo nano /etc/nginx/sites-available/ctf.porosub.org
+```
 
 Konten File:
+
+```conf
 limit_req_zone  $http_cf_connecting_ip zone=mylimit:10m rate=10r/s;
 limit_conn_zone $http_cf_connecting_ip zone=addr:10m;
 server {
@@ -259,8 +298,11 @@ server {
 
 ```bash
 sudo nano /etc/nginx/nginx.conf
+```
 
 Konten file:
+
+```conf
 user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
@@ -339,9 +381,9 @@ sudo systemctl restart nginx
 
 ```bash
 sudo certbot --nginx
-
-# Berikan email address, domain/subdomain address, dan pilih opsi untuk selalu redirect koneksi http ke https 
 ```
+
+Berikan email address, domain/subdomain address, dan pilih opsi untuk selalu redirect koneksi http ke https
 
 ---
 

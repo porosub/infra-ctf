@@ -393,7 +393,7 @@ Sekarang kita seharusnya sudah bisa mengakses platform CTFd dengan https melalui
 
 Untuk deploy soal-soal yang perlu dihost di server seperti soal web, pwn, dan lain-lain dapat melihat contoh pada dokumentasi.
 
-### Troubleshooting Deployment 
+## Troubleshooting Deployment 
 
 **mohon ditambah isi dari bagian ini apabila terdapat kendala dan kemudian menemukan solusinya, guna apabila terjadi masalah yang sama kedepannya dapat melihat dokumentasi ini kembali untuk memperbaikinya.**
 
@@ -407,6 +407,8 @@ Trouble ini mungkin sering terjadi, ketika sudah melakukan deployment dan kemudi
 Trouble ini kurang lebih sama seperti nomor sebelumnya, hanya saja ketika telah mengubah hak akses dari chall tersebut masih tetap tidak bisa diakses. Untuk itu kita perlu menginvestigasi lebih dalam apa permasalahan dari challenge tersebut kenapa tidak diakses. Kita dapat menemukan inti permasalahannya dengan masuk ke dalam container dari chall tersebut dengan menggunakan perintah `docker exec -it <ID CONTAINER> bash`. Setelah menjalankan perintah tersebut maka kita akan berada di dalam environment container, kemudian coba eksekusi file challengenya dan kemudian respon pun akan ditampilkan. Misalnya muncul penyebab masalahnya itu adalah perbedaan versi glibc dimana dari probset menggunakan versi 3.24 sedangkan dari image ubuntu versi latest hanya menyediakan sampai versi 3.21, sehingga kita bisa menyampaikannya kepada probset untuk memberbaiki challengenya.
 
 #### 4.dst (mohon ditambah apabila menemukan trouble baru)
+
+---
 
 ### Referensi
 

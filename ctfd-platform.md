@@ -406,6 +406,9 @@ Trouble ini mungkin sering terjadi, ketika sudah melakukan deployment dan kemudi
 #### 3. Challenge tidak berjalan dan penyebab bukan masalah hak akses/tidak diketahui
 Trouble ini kurang lebih sama seperti nomor sebelumnya, hanya saja ketika telah mengubah hak akses dari chall tersebut masih tetap tidak bisa diakses. Untuk itu kita perlu menginvestigasi lebih dalam apa permasalahan dari challenge tersebut kenapa tidak diakses. Kita dapat menemukan inti permasalahannya dengan masuk ke dalam container dari chall tersebut dengan menggunakan perintah `docker exec -it <ID CONTAINER> bash`. Setelah menjalankan perintah tersebut maka kita akan berada di dalam environment container, kemudian coba eksekusi file challengenya dan kemudian respon pun akan ditampilkan. Misalnya muncul penyebab masalahnya itu adalah perbedaan versi glibc dimana dari probset menggunakan versi 3.24 sedangkan dari image ubuntu versi latest hanya menyediakan sampai versi 3.21, sehingga kita bisa menyampaikannya kepada probset untuk memberbaiki challengenya.
 
+#### 4. Soal pwn tidak muncul teksnya
+Untuk permasalahan seperti teks pada soal pwn tidak muncul dahulu dimana yang muncul pertama kali justru baris kosong saja, kemudian ketika ditekan enter baru teks bisa diprint pada terminal, namun hal ini menyebabkan peserta tidak bisa menginputkan jawabannya. Solusi dari permasalahan ini adalah probset bisa memperbaiki soalnya kembali dengan cara menambahkan buffer pada kodenya karena soal seperti ini khususnya program yang berbasis pada bahasa C biasanya probset lupa menambahkan buffer pada kodenya.
+
 #### 4.dst (mohon ditambah apabila menemukan trouble baru)
 
 ---

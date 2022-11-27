@@ -1,0 +1,9 @@
+FROM php:7.4-apache
+
+RUN adduser ctf
+
+COPY index.php flag.txt /var/www/html/
+WORKDIR /var/www/html/
+
+EXPOSE 35267
+USER ctf

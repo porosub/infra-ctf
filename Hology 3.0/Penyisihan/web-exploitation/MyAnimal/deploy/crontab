@@ -1,0 +1,8 @@
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+
+# Reset apache access.log every minutes
+*/5 * * * * echo '' > /path/to/MyAnimal/logs/access.log
+
+*/15 * * * * /bin/bash /path/to/deploy-docker.sh

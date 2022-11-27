@@ -1,0 +1,289 @@
+Berikut ini adalah kode-kode yang dijalankan berdasarkan urutan yang dijelaskan pada README
+Tidak semua perintah terdokumentasikan, karena ada beberapa yang dijalankan di dalam TMUX 
+    1  sudo apt update && sudo apt upgrade
+    2  snap info lxd
+    3  sudo snap install lxd
+    4  snap list
+    5  ls
+    6  sudo usermod -a -G lxd ubuntu
+    7  exit
+    8  ls
+    9  df -h /
+   10  sudo lxd init
+   11  lxc launch ubuntu:18.04 web
+   12  lxc exec web -- apt update
+   13  lxc exec web -- apt install apache2
+   14  lxc exec web -- sudo --user ubuntu --login
+   15  sudo lxc config device add web myport80 proxy listen=tcp:0.0.0.0:80 connect=tcp:127.0.0.1:80
+   16  exit
+   17  ls
+   18  snap list
+   19  df -h /
+   20  lxc exec web -- apt install golang-github-lxc-lxd-dev
+   21  lxc exec web /bin/bash
+   22  exit
+   23  ls
+   24  df -h /
+   25  lxc list
+   26  lxc stop web
+   27  lxc list
+   28  lxc delete web
+   29  lxc list
+   30  df -h /
+   31  lxc launch ubuntu 20.04 go-note
+   32  lxc launch ubuntu:20.04 go-note
+   33  df -h /
+   34  lxc list
+   35  lxc console go-note
+   36  lxc list
+   37  lxc exec go-note update
+   38  lxc exec go-note -- apt update
+   39  lxc exec go-note -- apt install nginx
+   40  cat /etc/subuid 
+   41  cat  /etc/lxc/lxc-usernet
+   42  cat /etc/lxc/lxc-usernet
+   43  lxd
+   44  cat  /etc/subgid
+   45  exit
+   46  snap info lxd
+   47  sudo snap install lxd
+   48  snap list
+   49  sudo usermod -a -G lxd ubuntu
+   50  df -h /
+   51  exit
+   52  df -h /
+   53  sudo lxd init
+   54  lxc list
+   55  cat /etc/lxc/lxc-usernet 
+   56  sudo nano /etc/lxc/lxc-usernet 
+   57  sudo touch /etc/lxc/lxc-usernet
+   58  cd /etc/lxc
+   59  sudo apt-get install lxc
+   60  cat /etc/lxc/lxc-usernet 
+   61  nano /etc/lxc/lxc-usernet 
+   62  sudo nano /etc/lxc/lxc-usernet 
+   63  cat /etc/lxc/lxc-usernet 
+   64  cd ~/.config/lxc
+   65  mkdir ~/.config/lxc
+   66  cd ~/.config
+   67  mkdir /.config
+   68  sudo mkdir /.config
+   69  cd /.config
+   70  ls
+   71  mkdir lxc
+   72  cat /etc/lxc/default.conf
+   73  cp /etc/lxc/default.conf ~/.config/lxc/default.conf
+   74  sudo chmod -R 755 /home/.config/lxc
+   75  sudo chmod -R 755 ~/.config
+   76  sudo chmod -R 755 ~/.config/
+   77  cd ..
+   78  ls
+   79  cd home/
+   80  ls
+   81  cd ubuntu
+   82  ls
+   83  cd /.config/
+   84  ls
+   85  cd ..
+   86  cd ~
+   87  mkdir .config
+   88  ls
+   89  cd /.config
+   90  cd ~
+   91  cd ~/.config/
+   92  ls
+   93  mkdir lxc
+   94  cp /etc/lxc/default.conf ~/.config/lxc/default.conf
+   95  ls
+   96  cd lxc
+   97  ls
+   98  systemd-run --unit=myshell --user --scope -p "Delegate=yes" lxc-start go-note
+   99  sudo chmod -R 755 /home/ubuntu/.local/share/lxc
+  100  ls
+  101  echo "lxc.idmap = u 0 100000 65536" >> $HOME/.config/lxc/default.conf
+  102  echo "lxc.idmap = g 0 100000 65536" >> $HOME/.config/lxc/default.conf
+  103  exit
+  104  lxc list
+  105  df -h /
+  106  sudo apt-get update
+  107  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  108  echo   "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  109    $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  110  sudo apt-get update
+  111  sudo apt-get install docker-ce docker-ce-cli containerd.io
+  112  df -h /
+  113  docker --version
+  114  sudo groupadd docker
+  115  sudo usermod -aG docker $USER
+  116  newgrp docker
+  117  exit
+  118  ls
+  119  mkdir Go-Note
+  120  ls
+  121  rmdir Go-Note/
+  122  curl https://raw.githubusercontent.com/stndb01/linux/master/HOLOGY/hology.zip
+  123  curl -LJO https://raw.githubusercontent.com/stndb01/linux/master/HOLOGY/hology.zip
+  124  ls
+  125  sudo apt-get install unzip
+  126  mv hology.zip Go-Note.zip
+  127  unzip Go-Note.zip 
+  128  ls
+  129  cd hology/
+  130  ls
+  131  cd ..
+  132  ls
+  133  mv hology/ Go-Note/
+  134  ls
+  135  cd Go-Note/
+  136  ls
+  137  lxc list
+  138  lxc exec go-note --sudo /bin/bash
+  139  lxc exec go-note -- sudo /bin/bash
+  140  lxc list
+  141  exit
+  142  ls
+  143  sudo adduser dev
+  144  sudo usermod -aG sudo dev
+  145  ls
+  146  whoami
+  147  su - dev
+  148  ls
+  149  pwe
+  150  pwd
+  151  ls
+  152  cp Go-Note /home/dev/Go-Note/
+  153  cp /Go-Note /home/dev/Go-Note/
+  154  cp /Go-Note/ /home/dev/Go-Note/
+  155  cp /home/ubuntu/Go-Note/ /home/dev/Go-Note/
+  156  cp -r /home/ubuntu/Go-Note/ /home/dev/Go-Note/
+  157  sudo cp -r /home/ubuntu/Go-Note/ /home/dev/Go-Note/
+  158  cd /home/dev/Go-Note/
+  159  ls
+  160  cd ..
+  161  chmod -R 775 Go-Note/
+  162  su - dev
+  163  ls
+  164  lxc console go-note
+  165  lxc console
+  166  lxc list
+  167  lxc console go-note 
+  168  lxc exec go-note 
+  169  lxc exec go-note -- /bin/bash
+  170  lxc console go-note 
+  171  npm install
+  172  lxc console go-note 
+  173  clear
+  174  exit
+  175  ls
+  176  lxc console go-note 
+  177  npm --version
+  178  lxc console go-note 
+  179  ls
+  180  exit
+  181  ls
+  182  cd Go-Note/
+  183  nano Docke
+  184  nano Dockerfile
+  185  ls
+  186  docker build -t go-note .
+  187  ls
+  188  cd go-note/
+  189  ls
+  190  nano Dockerfile
+  191  ls
+  192  docker build -t go-note .
+  193  docker ps
+  194  docker pa -a
+  195  docker run -d --name=go-note -p 8080:8080/tcp go-note
+  196  docker ps
+  197  docker ps -a
+  198  docker logs d53b7050de8a 
+  199  exit
+  200  ls
+  201  lxc console go-note 
+  202  ls
+  203  exit
+  204  ls
+  205  cd Go-Note/
+  206  ls
+  207  cd ..
+  208  cd Go-Note/
+  209  ls
+  210  cd go-note/
+  211  ls
+  212  lxc console go-note
+  213  lxc exec -- /bin/bash
+  214  lxc exec -- /bin/bash go-note
+  215  lxc list
+  216  lxc exec go-note -- sudo /bin/bash
+  217  ls
+  218  nano Dockerfile 
+  219  cd ..
+  220  ls
+  221  nano Dockerfile 
+  222  docker build -t go-note .
+  223  ls
+  224  cd go-note/
+  225  ls
+  226  docker build -t go-note .
+  227  docker run -d --name=go-note -p 8080:8080/tcp go-note
+  228  docker ps
+  229  docker ps -a
+  230  docker rm 388612d0bdd2
+  231  docker rm d53b7050de8a
+  232  docker rm 07b46c8b6062
+  233  docker ps -a
+  234  docker build -t go-note .
+  235  docker run -d --name=go-note -p 8080:8080/tcp go-note
+  236  docker ps
+  237  docker ps -a
+  238  docker logs 00b29187cbde 
+  239  docker images
+  240  docker rm go-note
+  241  docker images
+  242  docker rmi go-note
+  243  docker images
+  244  docker build -t go-note .
+  245  docker run -d --name=go-note -p 8080:8080/tcp go-note
+  246  docker ps
+  247  docker images
+  248  lxc config device add go-note myapi proxy listen=tcp:0.0.0.0:2525 connect=tcp:127.0.0.1:2525
+  249  netstat -tulpn
+  250  sudo apt install net-tools
+  251  netstat -tulpn
+  252  ls
+  253  cd Go-Note/
+  254  ls
+  255  lxc file push build-lxc.zip go-note/home/dev
+  256  lxc file push build-lxc.zip go-note/home/ubuntu
+  257  lxc file push build-lxc.zip go-note/home/ubuntu/
+  258  cd ..
+  259  cd Go-Note/
+  260  ls
+  261  mv build-lxc.zip go-note/build-lxc.zip
+  262  cd go-note/
+  263  ls
+  264  unzip build-lxc.zip 
+  265  ls
+  266  docker ps
+  267  docker ps -a
+  268  docker rm c7b6eee00895
+  269  docker build -t go-note .
+  270  docker run -d --name=go-note -p 8080:8080/tcp go-note
+  271  docker ps
+  272  lxc console 
+  273  lxc console go-note
+  274  clear
+  275  lxc config device add go-note go-notessh proxy listen=tcp:0.0.0.0:1412 connect=tcp:127.0.0.1:1412
+  276  netstat -tulpn
+  277  lxc console go-note
+  278  ls
+  279  cd ..
+  280  ls
+  281  lxc file push hology go-note/home/dev/
+  282  lxc console go-note 
+  283  lxc console go-note
+  284  ls
+  285  cd Go-Note/
+  286  ls
+  287  history
